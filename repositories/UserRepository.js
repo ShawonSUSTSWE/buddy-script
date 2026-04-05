@@ -1,4 +1,4 @@
-import prisma from "@/lib/prisma";
+import prisma from "@/lib/config/prisma";
 
 export const userRepository = {
   async findByEmail(email) {
@@ -22,15 +22,22 @@ export const userRepository = {
     });
   },
 
-  async create({ firstName, lastName, email, passwordHash }) {
+  async create({ firstName, lastName, email, passwordHash, avatarUrl }) {
     return prisma.user.create({
-      data: { firstName, lastName, email, passwordHash },
+      data: {
+        firstName,
+        lastName,
+        email,
+        passwordHash,
+        avatarUrl,
+      },
       select: {
         id: true,
         firstName: true,
         lastName: true,
         email: true,
         createdAt: true,
+        avatarUrl: true,
       },
     });
   },
