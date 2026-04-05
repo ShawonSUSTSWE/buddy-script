@@ -1,10 +1,12 @@
 import { apiClient } from "@/lib/utils/ApiClient";
 import { timeAgo } from "@/lib/utils/UserUtils";
 import { useCallback, useState } from "react";
+import { useSession } from "next-auth/react";
 import LikeButton from "../like/LikeButton";
 import Reply from "./Reply";
 
 export default function Comment({ comment }) {
+  const { data: session } = useSession();
   const [replies, setReplies] = useState([]);
   const [showReplies, setShowReplies] = useState(false);
   const [replyContent, setReplyContent] = useState("");
@@ -143,7 +145,9 @@ export default function Comment({ comment }) {
               <div className="_feed_inner_comment_box_content">
                 <div className="_feed_inner_comment_box_content_image">
                   <img
-                    src="/assets/images/profile.png"
+                    src={
+                      session?.user?.avatarUrl || "/assets/images/profile.png"
+                    }
                     alt=""
                     className="_comment_img"
                   />
