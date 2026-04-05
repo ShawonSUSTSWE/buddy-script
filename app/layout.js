@@ -1,5 +1,7 @@
 import "./globals.css";
 import AuthProvider from "@/components/AuthProvider";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
 
 export const metadata = {
   title: "Buddy Script",
@@ -30,6 +32,14 @@ export default function RootLayout({ children }) {
       </head>
       <body>
         <AuthProvider>{children}</AuthProvider>
+        <ToastContainer
+          position="top-right"
+          autoClose={4000}
+          hideProgressBar={false}
+          newestOnTop
+          closeOnClick
+          pauseOnHover
+        />
         <script src="/assets/js/bootstrap.bundle.min.js" defer></script>
       </body>
     </html>
