@@ -56,3 +56,11 @@ body {
 ._like_count_num:hover {
   text-decoration: underline;
 }
+
+._comment_reply_list {
+  white-space: nowrap;
+}
+
+._comment_reply_num {
+  white-space: nowrap;
+}
