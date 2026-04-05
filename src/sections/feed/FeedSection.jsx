@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback, useRef } from "react";
-import { useSession } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 import Navbar from "@/components/feed/Navbar";
 import CreatePostForm from "@/components/feed/post/CreatePostForm";
 import PostCard from "@/components/feed/post/PostCard";
@@ -264,6 +264,30 @@ export default function FeedSection() {
                         <p style={{ fontSize: "13px", color: "#999" }}>
                           {session?.user?.email}
                         </p>
+                        <button
+                          onClick={() => signOut({ callbackUrl: "/login" })}
+                          style={{
+                            marginTop: "16px",
+                            padding: "8px 16px",
+                            background: "none",
+                            border: "1px solid #e0e0e0",
+                            borderRadius: "6px",
+                            color: "#ff6b6b",
+                            fontSize: "13px",
+                            fontWeight: "500",
+                            cursor: "pointer",
+                            width: "100%",
+                            transition: "background 0.2s",
+                          }}
+                          onMouseOver={(e) =>
+                            (e.target.style.background = "#fff0f0")
+                          }
+                          onMouseOut={(e) =>
+                            (e.target.style.background = "none")
+                          }
+                        >
+                          Log Out
+                        </button>
                       </div>
                     </div>
                   </div>
