@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
 import Link from "next/link";
 import RegistrationForm from "@/components/register/RegistrationForm";
 import { apiClient } from "@/lib/utils/ApiClient";
@@ -44,7 +45,19 @@ export default function RegisterSection() {
       });
 
       showSuccess("Account created successfully!");
-      router.push("/login?registered=true");
+
+      const result = await signIn("credentials", {
+        email: formData.email,
+        password: formData.password,
+        redirect: false,
+      });
+
+      if (result?.error) {
+        router.push("/login");
+      } else {
+        router.push("/feed");
+        router.refresh();
+      }
     } catch (error) {
       console.log(error);
     } finally {
