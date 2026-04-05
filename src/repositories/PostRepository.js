@@ -27,6 +27,14 @@ export const postRepository = {
         _count: {
           select: { likes: true, comments: { where: { deletedAt: null } } },
         },
+        comments: {
+          where: { deletedAt: null },
+          select: {
+            _count: {
+              select: { replies: true },
+            },
+          },
+        },
         likes: {
           where: { userId: currentUserId },
           select: { id: true },
@@ -59,6 +67,14 @@ export const postRepository = {
         },
         _count: {
           select: { likes: true, comments: { where: { deletedAt: null } } },
+        },
+        comments: {
+          where: { deletedAt: null },
+          select: {
+            _count: {
+              select: { replies: true },
+            },
+          },
         },
         likes: {
           where: { userId: currentUserId },

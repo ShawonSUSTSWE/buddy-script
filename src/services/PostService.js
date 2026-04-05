@@ -2,17 +2,22 @@ import { createPostSchema } from "@/lib/helpers/validations";
 import { AppError } from "@/lib/utils/AppError";
 import { postRepository } from "@/repositories/PostRepository";
 
-const transformPost = (post) => ({
-  id: post.id,
-  content: post.content,
-  imageUrl: post.imageUrl,
-  isPrivate: post.isPrivate,
-  createdAt: post.createdAt,
-  author: post.author,
-  likeCount: post._count.likes,
-  commentCount: post._count.comments,
-  userLiked: post.likes.length > 0,
-});
+const transformPost = (post) => {
+  const replyCount =
+    post.comments?.reduce((sum, c) => sum + (c._count?.replies ?? 0), 0) ?? 0;
+
+  return {
+    id: post.id,
+    content: post.content,
+    imageUrl: post.imageUrl,
+    isPrivate: post.isPrivate,
+    createdAt: post.createdAt,
+    author: post.author,
+    likeCount: post._count.likes,
+    commentCount: post._count.comments + replyCount,
+    userLiked: post.likes.length > 0,
+  };
+};
 
 export const postService = {
   async getFeed({ cursor, limit, currentUserId }) {

@@ -22,7 +22,8 @@ export default function LikeButton({
         ? `/api/comments/${entityId}/like`
         : `/api/replies/${entityId}/like`;
 
-  const handleToggleLike = async () => {
+  const handleToggleLike = async (e) => {
+    e.stopPropagation();
     if (loading) return;
 
     setLiked((prev) => !prev);
@@ -41,7 +42,8 @@ export default function LikeButton({
     }
   };
 
-  const handleShowLikers = async () => {
+  const handleShowLikers = async (e) => {
+    e.stopPropagation();
     if (count === 0) return;
     try {
       const data = await apiClient(apiPath);
@@ -53,57 +55,54 @@ export default function LikeButton({
   };
 
   return (
-    <div style={{ display: "inline-flex", alignItems: "center", gap: "4px" }}>
-      <button
+    <>
+      {/* Like toggle area — clicking anywhere here toggles like */}
+      <div
         onClick={handleToggleLike}
-        disabled={loading}
-        className={`_feed_inner_timeline_reaction_emoji _feed_reaction ${liked ? "_feed_reaction_active" : ""}`}
+        className={`_like_btn_area ${liked ? "_feed_reaction_active" : ""}`}
         style={{
-          background: "none",
-          border: "none",
-          cursor: "pointer",
           display: "flex",
           alignItems: "center",
-          gap: "4px",
-          padding: "4px 8px",
-          borderRadius: "4px",
-          transition: "all 0.2s ease",
+          justifyContent: "center",
+          gap: "6px",
+          cursor: "pointer",
+          width: "100%",
+          height: "100%",
         }}
         title={liked ? "Unlike" : "Like"}
       >
-        <span className="_feed_inner_timeline_reaction_link">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="18"
-            height="18"
-            fill="none"
-            viewBox="0 0 24 24"
-            style={{
-              transition: "transform 0.2s ease",
-              transform: liked ? "scale(1.15)" : "scale(1)",
-            }}
-          >
-            <path
-              fill={liked ? "#377DFF" : "#666"}
-              d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
-            />
-          </svg>
-        </span>
-      </button>
-
-      {count > 0 && (
-        <span
-          onClick={handleShowLikers}
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="18"
+          height="18"
+          fill="none"
+          viewBox="0 0 24 24"
           style={{
-            fontSize: "13px",
-            color: liked ? "#377DFF" : "#666",
-            cursor: "pointer",
-            fontWeight: liked ? "600" : "400",
+            transition: "transform 0.2s ease",
+            transform: liked ? "scale(1.15)" : "scale(1)",
           }}
         >
-          {count}
-        </span>
-      )}
+          <path
+            fill={liked ? "#377DFF" : "#666"}
+            d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+          />
+        </svg>
+        {count > 0 && (
+          <span
+            className="_like_count_num"
+            onClick={handleShowLikers}
+            style={{
+              fontSize: "13px",
+              color: liked ? "#377DFF" : "#666",
+              cursor: "pointer",
+              fontWeight: liked ? "600" : "400",
+              marginLeft: "2px",
+            }}
+          >
+            {count}
+          </span>
+        )}
+      </div>
 
       {showLikers && (
         <div
@@ -185,6 +184,6 @@ export default function LikeButton({
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 }
