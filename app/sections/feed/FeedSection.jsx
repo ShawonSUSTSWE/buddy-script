@@ -5,6 +5,7 @@ import { useSession } from "next-auth/react";
 import Navbar from "@/components/feed/Navbar";
 import CreatePostForm from "@/components/feed/post/CreatePostForm";
 import PostCard from "@/components/feed/post/PostCard";
+import { apiClient } from "@/lib/utils/ApiClient";
 
 export default function FeedSection() {
   const { data: session, status } = useSession();
@@ -14,42 +15,35 @@ export default function FeedSection() {
   const [initialLoading, setInitialLoading] = useState(true);
   const [hasMore, setHasMore] = useState(true);
   const observerRef = useRef(null);
+  const loadingRef = useRef(false);
 
-  const fetchPosts = useCallback(
-    async (cursorId = null) => {
-      if (loading) return;
-      setLoading(true);
+  const fetchPosts = useCallback(async (cursorId = null) => {
+    if (loadingRef.current) return;
+    loadingRef.current = true;
+    setLoading(true);
 
-      try {
-        const url = `/api/posts?limit=20${cursorId ? `&cursor=${cursorId}` : ""}`;
-        const res = await fetch(url);
+    try {
+      const { posts, nextCursor } = await apiClient(
+        `/api/posts?limit=20${cursorId ? `&cursor=${cursorId}` : ""}`,
+      );
 
-        if (res.ok) {
-          const data = await res.json();
-          const { posts, nextCursor } = data.result;
+      setPosts((prev) => (cursorId ? [...prev, ...posts] : posts));
+      setCursor(nextCursor);
+      setHasMore(!!nextCursor);
+    } catch {
+    } finally {
+      loadingRef.current = false;
+      setLoading(false);
+      setInitialLoading(false);
+    }
+  }, []);
 
-          setPosts((prev) => (cursorId ? [...prev, ...posts] : posts));
-          setCursor(nextCursor);
-          setHasMore(!!nextCursor);
-        }
-      } catch {
-        // Silently fail
-      } finally {
-        setLoading(false);
-        setInitialLoading(false);
-      }
-    },
-    [loading],
-  );
-
-  // Initial load
   useEffect(() => {
     if (status === "authenticated") {
       fetchPosts();
     }
-  }, [status]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [status]);
 
-  // Infinite scroll observer
   const lastPostRef = useCallback(
     (node) => {
       if (loading) return;
