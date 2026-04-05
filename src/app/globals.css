@@ -17,3 +17,38 @@ body {
   height: auto;
   min-height: 80px;
 }
+
+/* Reply-specific overrides (not in the reference main.css) */
+._comment_main._reply_comment {
+  margin-left: 60px;
+}
+
+._comment_main._reply_comment ._comment_image {
+  flex: 0 0 28px;
+  height: 28px;
+  width: 28px;
+}
+
+._comment_main._reply_comment ._comment_img1 {
+  max-width: 28px;
+  width: 28px;
+  height: 28px;
+}
+
+._comment_main._reply_comment ._comment_area {
+  margin: 0 0 0 12px;
+}
+
+._comment_main._reply_comment ._comment_details {
+  margin: 0 0 40px;
+}
+
+/* Comment action bar alignment fix */
+._comment_reply_list li {
+  display: flex;
+  align-items: center;
+}
+
+._comment_reply_list li + li {
+  margin-left: 6px;
+}
