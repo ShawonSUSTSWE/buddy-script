@@ -2,20 +2,9 @@
 
 import { useSession } from "next-auth/react";
 import { useState } from "react";
-import LikeButton from "./LikeButton";
-import CommentSection from "./CommentSection";
-
-function timeAgo(dateString) {
-  const now = new Date();
-  const date = new Date(dateString);
-  const seconds = Math.floor((now - date) / 1000);
-
-  if (seconds < 60) return "just now";
-  if (seconds < 3600) return `${Math.floor(seconds / 60)} minute ago`;
-  if (seconds < 86400) return `${Math.floor(seconds / 3600)} hours ago`;
-  if (seconds < 604800) return `${Math.floor(seconds / 86400)} days ago`;
-  return date.toLocaleDateString();
-}
+import LikeButton from "../like/LikeButton";
+import CommentSection from "../comment/CommentSection";
+import { timeAgo } from "@/lib/utils/UserUtils";
 
 export default function PostCard({ post, onDelete }) {
   const { data: session } = useSession();
@@ -67,14 +56,27 @@ export default function PostCard({ post, onDelete }) {
           </div>
 
           {isAuthor && (
-            <div className="_feed_inner_timeline_post_box_dropdown" style={{ position: "relative" }}>
+            <div
+              className="_feed_inner_timeline_post_box_dropdown"
+              style={{ position: "relative" }}
+            >
               <div className="_feed_timeline_post_dropdown">
                 <button
                   onClick={() => setShowDropdown(!showDropdown)}
                   className="_feed_timeline_post_dropdown_link"
-                  style={{ background: "none", border: "none", cursor: "pointer" }}
+                  style={{
+                    background: "none",
+                    border: "none",
+                    cursor: "pointer",
+                  }}
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="4" height="17" fill="none" viewBox="0 0 4 17">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="4"
+                    height="17"
+                    fill="none"
+                    viewBox="0 0 4 17"
+                  >
                     <circle cx="2" cy="2" r="2" fill="#C4C4C4" />
                     <circle cx="2" cy="8" r="2" fill="#C4C4C4" />
                     <circle cx="2" cy="15" r="2" fill="#C4C4C4" />
@@ -85,7 +87,13 @@ export default function PostCard({ post, onDelete }) {
               {showDropdown && (
                 <div
                   className="_feed_timeline_dropdown _timeline_dropdown"
-                  style={{ display: "block", position: "absolute", right: 0, top: "100%", zIndex: 10 }}
+                  style={{
+                    display: "block",
+                    position: "absolute",
+                    right: 0,
+                    top: "100%",
+                    zIndex: 10,
+                  }}
                 >
                   <ul className="_feed_timeline_dropdown_list">
                     <li className="_feed_timeline_dropdown_item">
@@ -93,11 +101,32 @@ export default function PostCard({ post, onDelete }) {
                         onClick={handleDelete}
                         disabled={deleting}
                         className="_feed_timeline_dropdown_link"
-                        style={{ background: "none", border: "none", cursor: "pointer", width: "100%", textAlign: "left", display: "flex", alignItems: "center", gap: "8px" }}
+                        style={{
+                          background: "none",
+                          border: "none",
+                          cursor: "pointer",
+                          width: "100%",
+                          textAlign: "left",
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "8px",
+                        }}
                       >
                         <span>
-                          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 18 18">
-                            <path stroke="#1890FF" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.2" d="M2.25 4.5h13.5M6 4.5V3a1.5 1.5 0 011.5-1.5h3A1.5 1.5 0 0112 3v1.5m2.25 0V15a1.5 1.5 0 01-1.5 1.5h-7.5a1.5 1.5 0 01-1.5-1.5V4.5h10.5zM7.5 8.25v4.5M10.5 8.25v4.5" />
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="18"
+                            height="18"
+                            fill="none"
+                            viewBox="0 0 18 18"
+                          >
+                            <path
+                              stroke="#1890FF"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="1.2"
+                              d="M2.25 4.5h13.5M6 4.5V3a1.5 1.5 0 011.5-1.5h3A1.5 1.5 0 0112 3v1.5m2.25 0V15a1.5 1.5 0 01-1.5 1.5h-7.5a1.5 1.5 0 01-1.5-1.5V4.5h10.5zM7.5 8.25v4.5M10.5 8.25v4.5"
+                            />
                           </svg>
                         </span>
                         {deleting ? "Deleting..." : "Delete Post"}
@@ -110,7 +139,10 @@ export default function PostCard({ post, onDelete }) {
           )}
         </div>
 
-        <h4 className="_feed_inner_timeline_post_title" style={{ whiteSpace: "pre-wrap" }}>
+        <h4
+          className="_feed_inner_timeline_post_title"
+          style={{ whiteSpace: "pre-wrap" }}
+        >
           {post.content}
         </h4>
 
@@ -120,15 +152,26 @@ export default function PostCard({ post, onDelete }) {
               src={post.imageUrl}
               alt="Post image"
               className="_time_img"
-              style={{ maxHeight: "500px", objectFit: "cover", width: "100%", borderRadius: "8px" }}
+              style={{
+                maxHeight: "500px",
+                objectFit: "cover",
+                width: "100%",
+                borderRadius: "8px",
+              }}
             />
           </div>
         )}
       </div>
 
       {/* Reactions bar */}
-      <div className="_feed_inner_timeline_total_reacts _padd_r24 _padd_l24 _mar_b26" style={{ marginTop: "12px" }}>
-        <div className="_feed_inner_timeline_total_reacts_image" style={{ display: "flex", alignItems: "center" }}>
+      <div
+        className="_feed_inner_timeline_total_reacts _padd_r24 _padd_l24 _mar_b26"
+        style={{ marginTop: "12px" }}
+      >
+        <div
+          className="_feed_inner_timeline_total_reacts_image"
+          style={{ display: "flex", alignItems: "center" }}
+        >
           <LikeButton
             entityType="post"
             entityId={post.id}
@@ -138,7 +181,8 @@ export default function PostCard({ post, onDelete }) {
         </div>
         <div className="_feed_inner_timeline_total_reacts_txt">
           <p className="_feed_inner_timeline_total_reacts_para1">
-            <span>{post.commentCount}</span> {post.commentCount === 1 ? "Comment" : "Comments"}
+            <span>{post.commentCount}</span>{" "}
+            {post.commentCount === 1 ? "Comment" : "Comments"}
           </p>
         </div>
       </div>

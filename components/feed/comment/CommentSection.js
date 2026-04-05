@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import LikeButton from "./LikeButton";
+import LikeButton from "../like/LikeButton";
 
 function timeAgo(dateString) {
   const now = new Date();
@@ -17,21 +17,55 @@ function timeAgo(dateString) {
 
 function ReplyItem({ reply }) {
   return (
-    <div style={{ display: "flex", gap: "10px", padding: "8px 0", marginLeft: "40px" }}>
+    <div
+      style={{
+        display: "flex",
+        gap: "10px",
+        padding: "8px 0",
+        marginLeft: "40px",
+      }}
+    >
       <img
         src={reply.author.avatarUrl || "/assets/images/profile.png"}
         alt=""
-        style={{ width: "28px", height: "28px", borderRadius: "50%", objectFit: "cover" }}
+        style={{
+          width: "28px",
+          height: "28px",
+          borderRadius: "50%",
+          objectFit: "cover",
+        }}
       />
       <div style={{ flex: 1 }}>
-        <div style={{ background: "#f0f2f5", borderRadius: "12px", padding: "8px 12px" }}>
+        <div
+          style={{
+            background: "#f0f2f5",
+            borderRadius: "12px",
+            padding: "8px 12px",
+          }}
+        >
           <p style={{ fontWeight: 600, fontSize: "13px", margin: 0 }}>
             {reply.author.firstName} {reply.author.lastName}
           </p>
-          <p style={{ fontSize: "13px", margin: 0, color: "#333" }}>{reply.content}</p>
+          <p style={{ fontSize: "13px", margin: 0, color: "#333" }}>
+            {reply.content}
+          </p>
         </div>
-        <div style={{ display: "flex", alignItems: "center", gap: "12px", marginTop: "4px", fontSize: "12px", color: "#999" }}>
-          <LikeButton entityType="reply" entityId={reply.id} initialLiked={reply.userLiked} initialCount={reply.likeCount} />
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "12px",
+            marginTop: "4px",
+            fontSize: "12px",
+            color: "#999",
+          }}
+        >
+          <LikeButton
+            entityType="reply"
+            entityId={reply.id}
+            initialLiked={reply.userLiked}
+            initialCount={reply.likeCount}
+          />
           <span>{timeAgo(reply.createdAt)}</span>
         </div>
       </div>
@@ -99,20 +133,54 @@ function CommentItem({ comment }) {
         <img
           src={comment.author.avatarUrl || "/assets/images/profile.png"}
           alt=""
-          style={{ width: "32px", height: "32px", borderRadius: "50%", objectFit: "cover" }}
+          style={{
+            width: "32px",
+            height: "32px",
+            borderRadius: "50%",
+            objectFit: "cover",
+          }}
         />
         <div style={{ flex: 1 }}>
-          <div style={{ background: "#f0f2f5", borderRadius: "12px", padding: "10px 14px" }}>
+          <div
+            style={{
+              background: "#f0f2f5",
+              borderRadius: "12px",
+              padding: "10px 14px",
+            }}
+          >
             <p style={{ fontWeight: 600, fontSize: "13px", margin: 0 }}>
               {comment.author.firstName} {comment.author.lastName}
             </p>
-            <p style={{ fontSize: "13px", margin: 0, color: "#333" }}>{comment.content}</p>
+            <p style={{ fontSize: "13px", margin: 0, color: "#333" }}>
+              {comment.content}
+            </p>
           </div>
-          <div style={{ display: "flex", alignItems: "center", gap: "12px", marginTop: "4px", fontSize: "12px", color: "#999" }}>
-            <LikeButton entityType="comment" entityId={comment.id} initialLiked={comment.userLiked} initialCount={comment.likeCount} />
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "12px",
+              marginTop: "4px",
+              fontSize: "12px",
+              color: "#999",
+            }}
+          >
+            <LikeButton
+              entityType="comment"
+              entityId={comment.id}
+              initialLiked={comment.userLiked}
+              initialCount={comment.likeCount}
+            />
             <button
               onClick={() => setShowReplyInput(!showReplyInput)}
-              style={{ background: "none", border: "none", cursor: "pointer", fontSize: "12px", color: "#666", fontWeight: 500 }}
+              style={{
+                background: "none",
+                border: "none",
+                cursor: "pointer",
+                fontSize: "12px",
+                color: "#666",
+                fontWeight: 500,
+              }}
             >
               Reply
             </button>
@@ -126,26 +194,38 @@ function CommentItem({ comment }) {
           onClick={loadReplies}
           disabled={loadingReplies}
           style={{
-            background: "none", border: "none", cursor: "pointer",
-            fontSize: "13px", color: "#377DFF", fontWeight: 500,
-            marginLeft: "42px", marginTop: "4px", padding: 0,
+            background: "none",
+            border: "none",
+            cursor: "pointer",
+            fontSize: "13px",
+            color: "#377DFF",
+            fontWeight: 500,
+            marginLeft: "42px",
+            marginTop: "4px",
+            padding: 0,
           }}
         >
-          {loadingReplies ? "Loading..." : `View ${replyCount} ${replyCount === 1 ? "reply" : "replies"}`}
+          {loadingReplies
+            ? "Loading..."
+            : `View ${replyCount} ${replyCount === 1 ? "reply" : "replies"}`}
         </button>
       )}
 
-      {showReplies && replies.map((reply) => (
-        <ReplyItem key={reply.id} reply={reply} />
-      ))}
+      {showReplies &&
+        replies.map((reply) => <ReplyItem key={reply.id} reply={reply} />)}
 
       {showReplies && replyCursor && (
         <button
           onClick={loadReplies}
           disabled={loadingReplies}
           style={{
-            background: "none", border: "none", cursor: "pointer",
-            fontSize: "13px", color: "#377DFF", marginLeft: "42px", marginTop: "4px",
+            background: "none",
+            border: "none",
+            cursor: "pointer",
+            fontSize: "13px",
+            color: "#377DFF",
+            marginLeft: "42px",
+            marginTop: "4px",
           }}
         >
           {loadingReplies ? "Loading..." : "Load more replies"}
@@ -153,23 +233,39 @@ function CommentItem({ comment }) {
       )}
 
       {showReplyInput && (
-        <div style={{ display: "flex", gap: "8px", marginLeft: "42px", marginTop: "8px" }}>
+        <div
+          style={{
+            display: "flex",
+            gap: "8px",
+            marginLeft: "42px",
+            marginTop: "8px",
+          }}
+        >
           <input
             type="text"
             value={replyContent}
             onChange={(e) => setReplyContent(e.target.value)}
             placeholder="Write a reply..."
             className="form-control"
-            style={{ fontSize: "13px", borderRadius: "20px", padding: "6px 14px" }}
+            style={{
+              fontSize: "13px",
+              borderRadius: "20px",
+              padding: "6px 14px",
+            }}
             onKeyDown={(e) => e.key === "Enter" && handleSubmitReply()}
           />
           <button
             onClick={handleSubmitReply}
             disabled={submittingReply || !replyContent.trim()}
             style={{
-              background: "#377DFF", color: "#fff", border: "none",
-              borderRadius: "20px", padding: "6px 16px", fontSize: "13px",
-              cursor: "pointer", whiteSpace: "nowrap",
+              background: "#377DFF",
+              color: "#fff",
+              border: "none",
+              borderRadius: "20px",
+              padding: "6px 16px",
+              fontSize: "13px",
+              cursor: "pointer",
+              whiteSpace: "nowrap",
             }}
           >
             {submittingReply ? "..." : "Reply"}
@@ -239,12 +335,18 @@ export default function CommentSection({ postId, commentCount: initialCount }) {
           onClick={loadComments}
           disabled={loading}
           style={{
-            background: "none", border: "none", cursor: "pointer",
-            fontSize: "13px", color: "#377DFF", fontWeight: 500,
+            background: "none",
+            border: "none",
+            cursor: "pointer",
+            fontSize: "13px",
+            color: "#377DFF",
+            fontWeight: 500,
             padding: "4px 0",
           }}
         >
-          {loading ? "Loading..." : `View ${commentCount} ${commentCount === 1 ? "comment" : "comments"}`}
+          {loading
+            ? "Loading..."
+            : `View ${commentCount} ${commentCount === 1 ? "comment" : "comments"}`}
         </button>
       )}
 
@@ -259,8 +361,12 @@ export default function CommentSection({ postId, commentCount: initialCount }) {
               onClick={loadComments}
               disabled={loading}
               style={{
-                background: "none", border: "none", cursor: "pointer",
-                fontSize: "13px", color: "#377DFF", marginBottom: "8px",
+                background: "none",
+                border: "none",
+                cursor: "pointer",
+                fontSize: "13px",
+                color: "#377DFF",
+                marginBottom: "8px",
               }}
             >
               {loading ? "Loading..." : "Load more comments"}
@@ -276,16 +382,25 @@ export default function CommentSection({ postId, commentCount: initialCount }) {
           onChange={(e) => setCommentContent(e.target.value)}
           placeholder="Write a comment..."
           className="form-control"
-          style={{ fontSize: "13px", borderRadius: "20px", padding: "8px 16px" }}
+          style={{
+            fontSize: "13px",
+            borderRadius: "20px",
+            padding: "8px 16px",
+          }}
           onKeyDown={(e) => e.key === "Enter" && handleSubmitComment()}
         />
         <button
           onClick={handleSubmitComment}
           disabled={submitting || !commentContent.trim()}
           style={{
-            background: "#377DFF", color: "#fff", border: "none",
-            borderRadius: "20px", padding: "8px 20px", fontSize: "13px",
-            cursor: "pointer", whiteSpace: "nowrap",
+            background: "#377DFF",
+            color: "#fff",
+            border: "none",
+            borderRadius: "20px",
+            padding: "8px 20px",
+            fontSize: "13px",
+            cursor: "pointer",
+            whiteSpace: "nowrap",
           }}
         >
           {submitting ? "..." : "Comment"}
