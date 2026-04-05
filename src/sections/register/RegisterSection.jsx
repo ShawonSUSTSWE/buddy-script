@@ -4,6 +4,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import RegistrationForm from "@/components/register/RegistrationForm";
+import { apiClient } from "@/lib/utils/ApiClient";
+import { showError, showSuccess } from "@/lib/utils/ToastUtils";
 
 export default function RegisterSection() {
   const router = useRouter();
@@ -14,7 +16,6 @@ export default function RegisterSection() {
     password: "",
     confirmPassword: "",
   });
-  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
@@ -23,19 +24,17 @@ export default function RegisterSection() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
 
     if (formData.password !== formData.confirmPassword) {
-      setError("Passwords do not match");
+      showError("Passwords do not match");
       return;
     }
 
     setLoading(true);
 
     try {
-      const res = await fetch("/api/auth/register", {
+      await apiClient("/api/auth/register", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           firstName: formData.firstName,
           lastName: formData.lastName,
@@ -44,16 +43,10 @@ export default function RegisterSection() {
         }),
       });
 
-      const data = await res.json();
-
-      if (!res.ok) {
-        setError(data.error || "Registration failed");
-        return;
-      }
-
+      showSuccess("Account created successfully!");
       router.push("/login?registered=true");
-    } catch {
-      setError("An unexpected error occurred");
+    } catch (error) {
+      console.log(error);
     } finally {
       setLoading(false);
     }
@@ -102,15 +95,6 @@ export default function RegisterSection() {
               <div className="_social_registration_content_bottom_txt _mar_b40">
                 <span>Or</span>
               </div>
-
-              {error && (
-                <div
-                  className="alert alert-danger py-2 mb-3"
-                  style={{ fontSize: "13px" }}
-                >
-                  {error}
-                </div>
-              )}
 
               <RegistrationForm
                 handleChange={handleChange}
