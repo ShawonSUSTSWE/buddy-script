@@ -1,10 +1,12 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import { useSession } from "next-auth/react";
 import { apiClient } from "@/lib/utils/ApiClient";
 import Comment from "./Comment";
 
 export default function CommentSection({ postId, commentCount: initialCount }) {
+  const { data: session } = useSession();
   const [comments, setComments] = useState([]);
   const [showComments, setShowComments] = useState(false);
   const [commentContent, setCommentContent] = useState("");
@@ -58,7 +60,7 @@ export default function CommentSection({ postId, commentCount: initialCount }) {
           <div className="_feed_inner_comment_box_content">
             <div className="_feed_inner_comment_box_content_image">
               <img
-                src="/assets/images/profile.png"
+                src={session?.user?.avatarUrl || "/assets/images/profile.png"}
                 alt=""
                 className="_comment_img"
               />
