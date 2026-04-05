@@ -8,6 +8,7 @@ import CommentSection from "../comment/CommentSection";
 import { timeAgo } from "@/lib/utils/UserUtils";
 import { apiClient } from "@/lib/utils/ApiClient";
 import { showSuccess } from "@/lib/utils/ToastUtils";
+import PostLikeCommentShare from "./PostLikeCommentShare";
 
 export default function PostCard({ post, onDelete }) {
   const { data: session } = useSession();
@@ -214,14 +215,7 @@ export default function PostCard({ post, onDelete }) {
         <div
           className="_feed_inner_timeline_total_reacts_image"
           style={{ display: "flex", alignItems: "center" }}
-        >
-          <LikeButton
-            entityType="post"
-            entityId={post.id}
-            initialLiked={post.userLiked}
-            initialCount={post.likeCount}
-          />
-        </div>
+        ></div>
         <div className="_feed_inner_timeline_total_reacts_txt">
           <p className="_feed_inner_timeline_total_reacts_para1">
             <span>{post.commentCount}</span>{" "}
@@ -230,6 +224,7 @@ export default function PostCard({ post, onDelete }) {
         </div>
       </div>
 
+      <PostLikeCommentShare post={post} />
       <CommentSection postId={post.id} commentCount={post.commentCount} />
     </div>
   );

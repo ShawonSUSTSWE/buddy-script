@@ -52,3 +52,7 @@ body {
 ._comment_reply_list li + li {
   margin-left: 6px;
 }
+
+._like_count_num:hover {
+  text-decoration: underline;
+}
