@@ -36,8 +36,8 @@ export default function PostCard({ post, onDelete }) {
       await apiClient(`/api/posts/${post.id}`, { method: "DELETE" });
       showSuccess("Post deleted successfully");
       onDelete?.(post.id);
-    } catch {
-      // apiClient already showed the error toast
+    } catch (error) {
+      console.log(error);
     } finally {
       setDeleting(false);
       setShowDropdown(false);
