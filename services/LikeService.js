@@ -1,4 +1,4 @@
-import { AppError } from "@/lib/middleware/AppError";
+import { AppError } from "@/lib/utils/AppError";
 import { likeRepository } from "@/repositories/LikeRepository";
 import { postRepository } from "@/repositories/PostRepository";
 import { commentRepository } from "@/repositories/CommentRepository";

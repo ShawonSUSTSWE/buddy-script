@@ -1,4 +1,4 @@
-import { AppError } from "@/lib/middleware/AppError";
+import { AppError } from "@/lib/utils/AppError";
 import { createCommentSchema } from "@/lib/helpers/validations";
 import { commentRepository } from "@/repositories/CommentRepository";
 import { postRepository } from "@/repositories/PostRepository";
