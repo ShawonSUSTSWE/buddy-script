@@ -76,10 +76,14 @@ export default function PostCard({ post, onDelete }) {
                 {post.author.firstName} {post.author.lastName}
               </h4>
               <p className="_feed_inner_timeline_post_box_para">
-                {timeAgo(post.createdAt)} .{" "}
-                <span style={{ color: post.isPrivate ? "#ff6b6b" : "#377DFF" }}>
-                  {post.isPrivate ? "🔒 Private" : "🌐 Public"}
-                </span>
+                {timeAgo(post.createdAt)}{" "}
+                {isAuthor && (
+                  <span
+                    style={{ color: post.isPrivate ? "#ff6b6b" : "#377DFF" }}
+                  >
+                    {post.isPrivate ? "🔒 Private" : "🌐 Public"}
+                  </span>
+                )}
               </p>
             </div>
           </div>
